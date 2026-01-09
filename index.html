@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Birthday Countdown!</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      background: linear-gradient(135deg, #ffb3c1, #d1b3ff, #b3ffd9, #fff3b3);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: #ff3d6d;
+    }
+
+    h1 {
+      font-size: 3em;
+      text-shadow: 2px 2px 5px #fff;
+      margin-bottom: 10px;
+      animation: bounce 2s infinite;
+    }
+
+    h3 {
+      font-size: 1.5em;
+      color: #ff9a9a;
+      margin-bottom: 30px;
+    }
+
+    #timer {
+      display: flex;
+      gap: 40px;
+      font-size: 2.5em;
+      font-weight: bold;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+
+    .time-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .time-label {
+      font-size: 0.8em;
+      margin-top: 5px;
+      color: #ff3d6d;
+    }
+
+    .doodle {
+      position: absolute;
+      font-size: 2em;
+      animation: float 6s infinite;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-30px); }
+      100% { transform: translateY(0px); }
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+    }
+
+    /* Bottom-right doodle */
+    #doodle {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 10;
+    }
+
+    .message {
+      font-size: 1.3em;
+      margin-top: 20px;
+      animation: fadeIn 2s ease-in forwards;
+      opacity: 0;
+    }
+
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+
+  </style>
+</head>
+<body>
+
+  <h1>⏰ Countdown to Your Birthday!</h1>
+  <h3>Something sweet is coming your way 🍬🎉</h3>
+
+  <div id="timer">
+    <div class="time-section">
+      <div id="days">0</div>
+      <div class="time-label">Days</div>
+    </div>
+    <div class="time-section">
+      <div id="hours">0</div>
+      <div class="time-label">Hours</div>
+    </div>
+    <div class="time-section">
+      <div id="minutes">0</div>
+      <div class="time-label">Minutes</div>
+    </div>
+    <div class="time-section">
+      <div id="seconds">0</div>
+      <div class="time-label">Seconds</div>
+    </div>
+  </div>
+
+  <!-- Pre-birthday messages -->
+  <div class="message" id="msg1">Just a few more sleeps until your special day!</div>
+  <div class="message" id="msg2">Keep counting… 🎁</div>
+  <div class="message" id="msg3">I can’t wait to celebrate YOU! 💖</div>
+
+  <!-- Floating doodles -->
+  <div class="doodle" style="top:20%; left:10%;">🎈</div>
+  <div class="doodle" style="top:50%; left:80%;">🍭</div>
+  <div class="doodle" style="top:70%; left:40%;">🎂</div>
+  <div class="doodle" style="top:30%; left:60%;">✨</div>
+
+  <!-- Pinterest Doodle (smaller size) -->
+  <div id="doodle">
+    <iframe src="https://pin.it/3FGLDLtRo" height="260" width="200" frameborder="0" scrolling="no"></iframe>
+  </div>
+
+  <script>
+    // Countdown Timer (12 AM IST, 14th June)
+    const countdown = () => {
+      const now = new Date();
+      const birthday = new Date("June 14, 2026 00:00:00 GMT+0530");
+      const diff = birthday - now;
+
+      if (diff <= 0) {
+        document.getElementById('days').innerHTML = 0;
+        document.getElementById('hours').innerHTML = 0;
+        document.getElementById('minutes').innerHTML = 0;
+        document.getElementById('seconds').innerHTML = 0;
+        clearInterval(timerInterval);
+        // Redirect to surprise page
+        window.location.href = "surprise.html";
+        return;
+      }
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((diff / (1000 * 60)) % 60);
+      const seconds = Math.floor((diff / 1000) % 60);
+
+      document.getElementById('days').innerHTML = days;
+      document.getElementById('hours').innerHTML = hours;
+      document.getElementById('minutes').innerHTML = minutes;
+      document.getElementById('seconds').innerHTML = seconds;
+    };
+
+    const timerInterval = setInterval(countdown, 1000);
+    countdown();
+
+    // Messages Animation
+    const messages = ['msg1','msg2','msg3'];
+    let msgIndex = 0;
+    setInterval(() => {
+      messages.forEach((id)=>{ document.getElementById(id).style.opacity = 0; });
+      document.getElementById(messages[msgIndex]).style.opacity = 1;
+      msgIndex = (msgIndex +1) % messages.length;
+    }, 4000);
+
+  </script>
+
+</body>
+</html>
